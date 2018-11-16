@@ -6,6 +6,8 @@ Computes the F1 score on BIO tagged data
 @author: Nils Reimers
 """
 
+
+
 def compute_f1_token_basis(predictions, correct, O_Label): 
        
     prec = compute_precision_token_basis(predictions, correct, O_Label)
@@ -41,6 +43,15 @@ def compute_precision_token_basis(guessed_sentences, correct_sentences, O_Label)
         
     return precision
 
+def save_pred_true(label_pred, label_correct, file_name="results_pred_true.txt"):
+    with open("./results/{}".format(file_name, "w")) as filo:
+        for correct_phrase, pred_phrase in zip(label_correct, label_pred):
+            for i, correct_tag in enumerate(correct_phrase):
+                filo.write("{0} {1} {2}\n".format("word", correct_tag, pred_phrase[i]))
+            filo.write("\n")
+
+
+
 
 def compute_f1(predictions, correct, idx2Label, correctBIOErrors='No', encodingScheme='BIO'): 
     label_pred = []    
@@ -52,18 +63,18 @@ def compute_f1(predictions, correct, idx2Label, correctBIOErrors='No', encodingS
         label_correct.append([idx2Label[element] for element in sentence])
             
     encodingScheme = encodingScheme.upper()
-    
-    
+
+    save_pred_true(label_pred, label_correct, "results_pred_true.txt")
+
     if encodingScheme == 'IOBES':
         convertIOBEStoBIO(label_pred)
         convertIOBEStoBIO(label_correct)                 
     elif encodingScheme == 'IOB':
         convertIOBtoBIO(label_pred)
         convertIOBtoBIO(label_correct)
-            
-                    
-    
-          
+
+    save_pred_true(label_pred, label_correct, "results_pred_true_converted.txt")
+
     checkBIOEncoding(label_pred, correctBIOErrors)
 
     prec = compute_precision(label_pred, label_correct)
