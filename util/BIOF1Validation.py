@@ -44,7 +44,7 @@ def compute_precision_token_basis(guessed_sentences, correct_sentences, O_Label)
     return precision
 
 def save_pred_true(label_pred, label_correct, file_name="results_pred_true.txt"):
-    with open("./results/{}".format(file_name, "w")) as filo:
+    with open("./results/{}".format(file_name), "w") as filo:
         for correct_phrase, pred_phrase in zip(label_correct, label_pred):
             for i, correct_tag in enumerate(correct_phrase):
                 filo.write("{0} {1} {2}\n".format("word", correct_tag, pred_phrase[i]))
