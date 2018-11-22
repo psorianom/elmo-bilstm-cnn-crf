@@ -549,8 +549,8 @@ class ELMoBiLSTM:
         labelKey = self.labelKeys[modelName]
         encodingScheme = labelKey[labelKey.index('_')+1:]
         
-        pre, rec, f1 = BIOF1Validation.compute_f1(predLabels, correctLabels, idx2Label, 'O', encodingScheme)
-        pre_b, rec_b, f1_b = BIOF1Validation.compute_f1(predLabels, correctLabels, idx2Label, 'B', encodingScheme)
+        pre, rec, f1, label_correct, label_pred = BIOF1Validation.compute_f1(predLabels, correctLabels, idx2Label, 'O', encodingScheme)
+        pre_b, rec_b, f1_b, label_correct, label_pred = BIOF1Validation.compute_f1(predLabels, correctLabels, idx2Label, 'B', encodingScheme)
         
         self.save_pred_true(sentences, label_pred, label_correct, "results_pred_true.txt")
         
