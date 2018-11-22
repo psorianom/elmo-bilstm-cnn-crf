@@ -85,7 +85,7 @@ def compute_f1(predictions, correct, idx2Label, correctBIOErrors='No', encodingS
     if (rec+prec) > 0:
         f1 = 2.0 * prec * rec / (prec + rec);
         
-    return prec, rec, f1
+    return prec, rec, f1, label_correct, label_pred
 
 
 def convertIOBtoBIO(dataset):

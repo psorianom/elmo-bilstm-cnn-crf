@@ -552,6 +552,8 @@ class ELMoBiLSTM:
         pre, rec, f1 = BIOF1Validation.compute_f1(predLabels, correctLabels, idx2Label, 'O', encodingScheme)
         pre_b, rec_b, f1_b = BIOF1Validation.compute_f1(predLabels, correctLabels, idx2Label, 'B', encodingScheme)
         
+        self.save_pred_true(sentences, label_pred, label_correct, "results_pred_true.txt")
+        
         if f1_b > f1:
             logging.debug("Setting wrong tags to B- improves from %.4f to %.4f" % (f1, f1_b))
             pre, rec, f1 = pre_b, rec_b, f1_b
@@ -604,6 +606,16 @@ class ELMoBiLSTM:
                     dataset[dataName][sentenceIdx]['taskID'] = [taskID] * len(dataset[dataName][sentenceIdx]['tokens'])
             
             taskID += 1
+
+
+    @staticmethod
+    def save_pred_true(sentences, label_pred, label_correct, file_name="results_pred_true.txt"):
+        assert(len(sentences) == len(label_pred))
+        with open("./results/{}".format(file_name), "w") as filo:
+            for i, (correct_phrase, pred_phrase) in enumerate(zip(label_correct, label_pred)):
+                for j, correct_tag in enumerate(correct_phrase):
+                    filo.write("{0} {1} {2}\n".format(sentences[i]["raw_tokens"][j], correct_tag, pred_phrase[j]))
+                filo.write("\n")
 
 
     def saveModel(self, modelName, epoch, dev_score, test_score):
