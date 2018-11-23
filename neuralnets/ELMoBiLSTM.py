@@ -610,11 +610,13 @@ class ELMoBiLSTM:
 
     @staticmethod
     def save_pred_true(sentences, label_pred, label_correct, file_name="results_pred_true.txt"):
-        assert(len(sentences) == len(label_pred))
+        assert(len(sentences) == len(label_pred) == len(label_correct))
         with open("./results/{}".format(file_name), "w") as filo:
             for i, (correct_phrase, pred_phrase) in enumerate(zip(label_correct, label_pred)):
                 for j, correct_tag in enumerate(correct_phrase):
-                    filo.write("{0} {1} {2}\n".format(sentences[i]["raw_tokens"][j], correct_tag, pred_phrase[j]))
+                    if j >= len(sentences[i]["tokens"]):
+                        continue
+                    filo.write("{0} {1} {2}\n".format(sentences[i]["tokens"][j], correct_tag, pred_phrase[j]))
                 filo.write("\n")
 
 
